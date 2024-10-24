@@ -6,6 +6,7 @@ using namespace std;
 // Checks whether the inputted text contains whitespace or not
 bool bOnlyWhitespace(string text)
 {
+    cin.clear();
     return text.find_first_not_of(" \t\n") == text.npos;
     // text.find_first_not_of(" \t\n") Finds the first character that does not contain whitespace (a space, a tab or a new line)
     // text.npos tells the find_first_not_of function to continue until the end of the string
@@ -26,30 +27,12 @@ int main(int argc, char* argv[])
         cout << "\nEnter text: ";
         getline(cin, text); // Reads the whole line of input, so that spaces are included
 
-        // Finds how many spaces are in the given sentence, as this would determine how many words are in the sentence
-        //int numOfSpaces = text.find(" ");
-        //cout << "num of spaces " << numOfSpaces;
-        //int words = numOfSpaces;
-
-        //for (words)
+        for (int i = 0 /*start of the index*/; i < text.length(); i++ /*increment by 1 each time*/)
         {
-            int lettersInWord = text.find_first_of(" ");
-            cout << "Letters in word: " << lettersInWord << endl;
-
+            cout << "|  " << text[i] << "  ";
         }
 
-        //int i = 1;
-        //char targetChar = text.at(i);
-        //text.insert(i--, "|  ");
-        //text.insert(i++, "  |");
-
-
-        for (int i = 0; i < text.length(); i++)
-        {
-
-        }
-
-        cout << text;
+        cout << "|";
 
         while (bOnlyWhitespace(text) == true)
         {
