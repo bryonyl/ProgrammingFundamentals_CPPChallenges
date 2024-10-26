@@ -53,12 +53,12 @@ int main(int argc, char* argv[])
         applyAsciiArt(text);
         cout << "\nEnter text: ";
         getline(cin, text);
-    }
 
-    while (bOnlyWhitespace(text) == true)
-    {
-        cerr << "\nError! An empty input is not allowed! Please try again.";
-        cout << "\nEnter text: ";
-        getline(cin, text);
+        while (bOnlyWhitespace(text) == true)
+        {
+            cerr << "\nError! An empty input is not allowed! Please try again." << endl;
+            cout << "\nEnter text: ";
+            getline(cin, text);
+        }
     }
 }
