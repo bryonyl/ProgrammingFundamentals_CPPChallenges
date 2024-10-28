@@ -1,7 +1,17 @@
 #include <iostream>
+#include <string>
+
+using namespace std;
 
 int main(int argc, char* argv[])
 {
-    //Insert your code to complete challenge 5
+    cout << "CHALLENGE 5";
+    cout << "-----------";
+
+    string text;
+
+    cout << "Please input your text: ";
+    getline(cin, text);
+    
     return 0;
 }

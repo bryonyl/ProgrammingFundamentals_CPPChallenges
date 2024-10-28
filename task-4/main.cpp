@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
         cout << "\nEnter text: ";
         getline(cin, text); // Reads the whole line of input, so that spaces are included
 
-        for (int i = 0 /*start of the index*/; i < text.length(); i++ /*increment by 1 each time*/)
+        for (int i = 0 /*start of the index*/; i < text.length()/*condition*/; i++ /*increment by 1 each time*/)
         {
             cout << "|  " << text[i] << "  ";
         }
