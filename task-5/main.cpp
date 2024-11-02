@@ -37,10 +37,17 @@ string convertToSentenceCase(string text) // Characters should be uppercase only
 
     for (int i = 0; i <= text.length(); i++)
     {
-        if (text[i] == '!');
+        if (text[i] == '!')
         {
-            cout << " ";
+            text[i] = text[i - 1]; // Shifts array elements to the right, making room for a space
         }
+        else
+        {
+            cout << "Criteria not fulfilled";
+        }
+        text[i] = ' ';
+        cout << text[i]; // Print the whole string ?
+        break;
     }
     return text;
 }
@@ -56,6 +63,7 @@ int main(int argc, char* argv[])
     cout << "-----------" << endl;
 
     string text = "";
+
     cout << "Please input your text: ";
     getline(cin, text);
     convertToLowercaseText(text);
