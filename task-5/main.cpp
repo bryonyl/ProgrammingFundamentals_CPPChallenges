@@ -1,59 +1,86 @@
 #include <iostream>
 #include <string>
-#include <cctype>
 
 using namespace std;
 
 string convertToLowercaseText(string text)
 {
     cout << "Lowercase: ";
+
     for (int i = 0; i <= text.length(); i++)
     {
-        unsigned char lowercase (tolower(text[i]));
-        cout << lowercase;
+        cout << unsigned char (tolower(text[i]));
     }
+
     cout << endl;
+
     return text;
 }
 
 string convertToUppercaseText(string text)
 {
     cout << "Uppercase: ";
+
     for (int i = 0; i <= text.length(); i++)
     {
-        unsigned char uppercase(toupper(text[i]));
-        cout << uppercase;
+        cout << unsigned char (toupper(text[i]));
     }
+
     cout << endl;
+
     return text;
 }
 
-string convertToSentenceCase(string text) // Characters should be uppercase only if: 1. it is the first letter of the sentence,
-                                          // 2. The character is alphanumeroic and perceded by either a periodmexlamanatiom aro on question mark
+string convertToSentenceCase(string text)
 {
     cout << "Sentence case: ";
-    unsigned char firstChar (toupper(text[0])); // Prints the first character of the sentence as uppercase
-    cout << firstChar;
+
+    text[0] = toupper(text[0]); // Prints first character as uppercase
 
     for (int i = 0; i <= text.length(); i++)
     {
-        if (text[i] == '!')
-        {
-            text[i] = text[i - 1]; // Shifts array elements to the right, making room for a space
+
+        if (text[i] == '!' || text[i] == '?' || text[i] == '.')
+        { 
+            i++; // Moves on to the next character
+
+            while (text[i] == ' ')
+            {
+                i++; // Skips over any spaces
+            }
+            text[i] = toupper(text[i]); // Capitalises the next character
         }
-        else
-        {
-            cout << "Criteria not fulfilled";
-        }
-        text[i] = ' ';
-        cout << text[i]; // Print the whole string ?
-        break;
+
+        continue;
     }
+
+    cout << text << endl;
+
     return text;
 }
 
 string convertToAlternatingCase(string text) // Alternating case should be preserved across whitespace and punctuation,
 {
+    cout << "Alternating case: ";
+
+    for (int i = 0; i <= text.length(); i++)
+    {
+        if (text[i] % 2 == 0) // Checks if number is even
+        {
+            cout << "even";
+            cout << i;
+            //cout << unsigned char(toupper(text[i]));
+        }
+        else
+        {
+            cout << "odd";
+            cout << i;
+            //cout << unsigned char(tolower(text[i]));
+        }
+    }
+
+    cout << endl;
+
     return text;
 }
 
@@ -69,6 +96,7 @@ int main(int argc, char* argv[])
     convertToLowercaseText(text);
     convertToUppercaseText(text);
     convertToSentenceCase(text);
+    convertToAlternatingCase(text);
     
     return 0;
 }
