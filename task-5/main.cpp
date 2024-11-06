@@ -35,8 +35,6 @@ string convertToSentenceCase(string text)
 {
     cout << "Sentence case: ";
 
-    
-
     for (int i = 0; i <= text.length(); i++)
     {
         text[0] = toupper(text[0]); // Prints first character as uppercase
@@ -68,7 +66,17 @@ string convertToAlternatingCase(string text) // Alternating case should be prese
 {
     cout << "Alternating case: ";
 
-    for (int i = 0; i <= text.length(); i++)
+    for (int j = 0; j < text.length(); j++)
+    {
+        while ((isalpha(text[j])) == false) // Checks if characters entered are non-alphabetic
+        {
+            j++; // If the program comes across any non-alphabetic characters, it skips over them to ensure the alternating case is preserved across punctuation and whitespace
+            // I used the index j instead of i for this as j needs to go through the text to check for non-alphabetical characters. i, on the other hand, needs to go through the
+            // text and actually make the text alternating, as seen in the for loop below.
+        }
+    }
+
+    for (int i = 0; i < text.length(); i++)
     {
         if (i % 2 == 0) // Checks if index is even
         {
@@ -85,16 +93,16 @@ string convertToAlternatingCase(string text) // Alternating case should be prese
     return text;
 }
 
-bool bIsInputOnlyNumbers(string text, int i = 0)
+bool bIsInputAlpha(string text, int i = 0)
 {
-    if (isdigit(text[i]) == true || (isalpha(text[i])) == false)
+    if ((isalpha(text[i])) == false) // Checks if characters entered are only numbers or not apart of the alphabet, e.g. punctuation
     {
         cerr << "[ERROR] Can't run text casing - only alphabetical characters allowed!" << endl;
-        return true;
+        return false;
     }
     else
     {
-        return false;
+        return true;
     }
 }
 
@@ -107,7 +115,7 @@ int main(int argc, char* argv[])
 
     cout << "Please input your text: ";
     getline(cin, text);
-    bIsInputOnlyNumbers(text);
+    bIsInputAlpha(text);
     convertToLowercaseText(text);
     convertToUppercaseText(text);
     convertToSentenceCase(text);
