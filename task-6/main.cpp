@@ -18,8 +18,8 @@ int main(int argc, char* argv[])
     cout << "CHALLENGE 6" << endl;
     cout << "-----------" << endl;
 
-    int guess = 1;
-    int randomNum = /*random(0, 100);*/ 56;
+    int guess = 0;
+    int randomNum = random(0, 100);
     int difference = abs(guess - randomNum);
     int totalGuesses = 0;
     bool bPlayerWon = false;
@@ -36,56 +36,47 @@ int main(int argc, char* argv[])
 
         if (difference >= 50)
         {
-            cout << "Freezing";
-            break;
+            cout << "Freezing" << endl;
         }
         else if (35 <= difference < 50)
         {
-            cout << "Colder";
-            break;
+            cout << "Colder" << endl;
         }
         else if (25 <= difference < 35)
         {
-            cout << "Cold";
-            break;
+            cout << "Cold" << endl;
         }
         else if (15 <= difference < 25)
         {
-            cout << "Warm";
-            break;
+            cout << "Warm" << endl;
         }
         else if (10 <= difference < 15)
         {
-            cout << "Warmer";
-            break;
+            cout << "Warmer" << endl;
         }
         else if (5 <= difference < 10)
         {
-            cout << "Hot";
-            break;
+            cout << "Hot" << endl;
         }
         else if (3 <= difference < 5)
         {
-            cout << "Hotter";
-            break;
+            cout << "Hotter" << endl;
         }
         else if (1 <= difference <= 2)
         {
-            cout << "Boiling";
-            break;
+            cout << "Boiling" << endl;
         }
-        else if (guess == 0)
+        else if (guess == randomNum)
         {
-            guess == 0;
-            cout << "Correct! You Win!";
+            bPlayerWon = true;
+            cout << "Correct! You Win!" << endl;
             cout << "Total number of guesses: " << totalGuesses << endl;
             exit(0);
         }
-
-        
-        }
+    }
 }
-   
+    
+
 /*switch (guess)
         {
         case freezing:
