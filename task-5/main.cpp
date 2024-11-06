@@ -66,14 +66,13 @@ string convertToAlternatingCase(string text) // Alternating case should be prese
 {
     cout << "Alternating case: ";
 
-    for (int j = 0; j < text.length(); j++)
+    int j = 0;
+
+    while ((isalpha(text[j])) == false) // Checks if characters entered are non-alphabetic
     {
-        while ((isalpha(text[j])) == false) // Checks if characters entered are non-alphabetic
-        {
-            j++; // If the program comes across any non-alphabetic characters, it skips over them to ensure the alternating case is preserved across punctuation and whitespace
-            // I used the index j instead of i for this as j needs to go through the text to check for non-alphabetical characters. i, on the other hand, needs to go through the
-            // text and actually make the text alternating, as seen in the for loop below.
-        }
+        j++; // If the program comes across any non-alphabetic characters, it skips over them to ensure the alternating case is preserved across punctuation and whitespace
+        // I used the index j instead of i for this as j needs to go through the text to check for non-alphabetical characters. i, on the other hand, needs to go through the
+        // text and actually make the text alternating, as seen in the for loop below.
     }
 
     for (int i = 0; i < text.length(); i++)
