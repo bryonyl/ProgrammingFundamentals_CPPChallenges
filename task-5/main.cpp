@@ -39,7 +39,6 @@ string convertToSentenceCase(string text)
 
     for (int i = 0; i <= text.length(); i++)
     {
-
         if (text[i] == '!' || text[i] == '?' || text[i] == '.')
         { 
             i++; // Moves on to the next character
@@ -49,6 +48,10 @@ string convertToSentenceCase(string text)
                 i++; // Skips over any spaces
             }
             text[i] = toupper(text[i]); // Capitalises the next character
+        }
+        else
+        {
+            text[i] = tolower(text[i]); // Ensures any other characters are lowercase
         }
 
         continue;
@@ -65,23 +68,33 @@ string convertToAlternatingCase(string text) // Alternating case should be prese
 
     for (int i = 0; i <= text.length(); i++)
     {
-        if (text[i] % 2 == 0) // Checks if number is even
+        if (i % 2 == 0) // Checks if index is even
         {
-            cout << "even";
-            cout << i;
-            //cout << unsigned char(toupper(text[i]));
+            cout << unsigned char(toupper(text[i]));
         }
         else
         {
-            cout << "odd";
-            cout << i;
-            //cout << unsigned char(tolower(text[i]));
+            cout << unsigned char(tolower(text[i]));
         }
     }
 
     cout << endl;
 
     return text;
+}
+
+bool bIsInputOnlyNumbers(string text, int i = 0)
+{
+    if (isdigit(text[i]))
+    {
+        cerr << "[ERROR] Can't run text casing - only alphabetical characters allowed!" << endl;
+        return true;
+    }
+    else
+    {
+        cout << "not only digits";
+        return false;
+    }
 }
 
 int main(int argc, char* argv[])
@@ -93,6 +106,7 @@ int main(int argc, char* argv[])
 
     cout << "Please input your text: ";
     getline(cin, text);
+    bIsInputOnlyNumbers(text);
     convertToLowercaseText(text);
     convertToUppercaseText(text);
     convertToSentenceCase(text);
