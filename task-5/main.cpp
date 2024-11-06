@@ -37,25 +37,27 @@ string convertToSentenceCase(string text)
 
     for (int i = 0; i <= text.length(); i++)
     {
-        text[0] = toupper(text[0]); // Prints first character as uppercase
+        
 
         if (text[i] == '!' || text[i] == '?' || text[i] == '.')
         { 
             i++; // Moves on to the next character
 
-            while (text[i] == ' ')
-            {
-                i++; // Skips over any spaces
-            }
             text[i] = toupper(text[i]); // Capitalises the next character
         }
         else
         {
             text[i] = tolower(text[i]); // Ensures any other characters are lowercase
         }
+        while (text[i] == ' ')
+        {
+            i++; // Skips over any spaces
+        }
 
         continue;
     }
+
+    text[0] = toupper(text[0]); // Prints first character as uppercase
 
     cout << text << endl;
 
@@ -114,6 +116,7 @@ int main(int argc, char* argv[])
 
     cout << "Please input your text: ";
     getline(cin, text);
+
     bIsInputAlpha(text);
     convertToLowercaseText(text);
     convertToUppercaseText(text);
