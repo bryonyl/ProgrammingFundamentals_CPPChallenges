@@ -35,10 +35,12 @@ string convertToSentenceCase(string text)
 {
     cout << "Sentence case: ";
 
-    text[0] = toupper(text[0]); // Prints first character as uppercase
+    
 
     for (int i = 0; i <= text.length(); i++)
     {
+        text[0] = toupper(text[0]); // Prints first character as uppercase
+
         if (text[i] == '!' || text[i] == '?' || text[i] == '.')
         { 
             i++; // Moves on to the next character
@@ -85,14 +87,13 @@ string convertToAlternatingCase(string text) // Alternating case should be prese
 
 bool bIsInputOnlyNumbers(string text, int i = 0)
 {
-    if (isdigit(text[i]))
+    if (isdigit(text[i]) == true || (isalpha(text[i])) == false)
     {
         cerr << "[ERROR] Can't run text casing - only alphabetical characters allowed!" << endl;
         return true;
     }
     else
     {
-        cout << "not only digits";
         return false;
     }
 }
