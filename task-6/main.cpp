@@ -10,22 +10,33 @@ int main(int argc, char* argv[])
 
     int guess = 0;
     int randomNum = random(0, 100);
-    
+
     int totalGuesses = 0;
     bool bPlayerWon = false;
 
     cout << "Psst! The correct answer is " << randomNum << endl;
-
     while (bPlayerWon == false)
     {
         cout << "Guess what the random number is: ";
         cin >> guess;
         cout << endl;
 
+        while (guess > 100 || guess < 0)
+        {
+            cerr << "[WARNING] Guess from 0-100!" << endl;
+            break;
+        }
+        while (cin.fail())
+        {
+            cerr << "[ERROR] Numbers allowed only! Exiting." << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
+            exit(404);
+        }
+
         totalGuesses++;
 
         int difference = abs(guess - randomNum);
-        cout << difference;
 
         if (difference >= 50)
         {
@@ -67,5 +78,6 @@ int main(int argc, char* argv[])
             exit(0);
         }
     }
+
     return 0;
 }
