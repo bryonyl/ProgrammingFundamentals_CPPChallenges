@@ -49,7 +49,7 @@ string convertToSentenceCase(string text)
             text[i] = toupper(text[i]);
             caps = false;
         }
-        else
+        else if (isalpha(text[i]))
         {
             text[i] = tolower(text[i]); // Ensures any other characters are lowercase
         }
@@ -68,30 +68,35 @@ string convertToAlternatingCase(string text) // Alternating case should be prese
 {
     cout << "Alternating case: ";
 
-    int j = 0;
+    //int j = 0;
 
-    while ((isalpha(text[j])) == false) // Checks if characters entered are non-alphabetic
-    {
-        j++; // If the program comes across any non-alphabetic characters, it skips over them to ensure the alternating case is preserved across punctuation and whitespace
-        // I used the index j instead of i for this as j needs to go through the text to check for non-alphabetical characters. i, on the other hand, needs to go through the
-        // text and actually make the text alternating, as seen in the for loop below.
-    }
+    //while ((isalpha(text[j])) == false) // Checks if characters entered are non-alphabetic
+    //{
+    //    j++; // If the program comes across any non-alphabetic characters, it skips over them to ensure the alternating case is preserved across punctuation and whitespace
+    //    // I used the index j instead of i for this as j needs to go through the text to check for non-alphabetical characters. i, on the other hand, needs to go through the
+    //    // text and actually make the text alternating, as seen in the for loop below.
+    //}
 
-    for (int i = 0; i < text.length(); i++)
+    int tracker = 0;
+
+    for (int tracker = 0; tracker < text.length(); tracker++) 
     {
-        if (i % 2 == 0) // Checks if index is even
+        if (tracker % 2 == 0 && isalpha(text[tracker])) // Checks if index is even
         {
-            cout << unsigned char(toupper(text[i]));
+             unsigned char(toupper(text[tracker]));
         }
-        else
+        else if (isalpha(text[tracker]))
         {
-            cout << unsigned char(tolower(text[i]));
+             unsigned char(tolower(text[tracker]));
         }
+
+        
     }
 
     cout << endl;
 
     return text;
+    cout << text;
 }
 
 bool bIsInputAlpha(string text, int i = 0)
@@ -117,10 +122,15 @@ int main(int argc, char* argv[])
     cout << "Please input your text: ";
     getline(cin, text);
 
-    bIsInputAlpha(text);
-    convertToLowercaseText(text);
-    convertToUppercaseText(text);
-    convertToSentenceCase(text);
+    if (!bIsInputAlpha(text))
+    {
+        return 0;
+    }
+    
+    
+    //convertToLowercaseText(text);
+    //convertToUppercaseText(text);
+    //convertToSentenceCase(text);
     convertToAlternatingCase(text);
     
     return 0;
