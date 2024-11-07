@@ -33,27 +33,27 @@ string convertToUppercaseText(string text)
 
 string convertToSentenceCase(string text)
 {
+    bool caps = false;
+
     cout << "Sentence case: ";
 
     for (int i = 0; i <= text.length(); i++)
     {
-        
-
         if (text[i] == '!' || text[i] == '?' || text[i] == '.')
-        { 
-            i++; // Moves on to the next character
-
-            text[i] = toupper(text[i]); // Capitalises the next character
+        {
+            caps = true;
+            i++;
+        }
+        if ((isalpha(text[i]) && (caps == true)))
+        {
+            text[i] = toupper(text[i]);
+            caps = false;
         }
         else
         {
             text[i] = tolower(text[i]); // Ensures any other characters are lowercase
         }
-        while (text[i] == ' ')
-        {
-            i++; // Skips over any spaces
-        }
-
+        
         continue;
     }
 
