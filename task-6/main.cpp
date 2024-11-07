@@ -10,11 +10,11 @@ int main(int argc, char* argv[])
 
     int guess = 0;
     int randomNum = random(0, 100);
-
     int totalGuesses = 0;
     bool bPlayerWon = false;
 
     cout << "Psst! The correct answer is " << randomNum << endl << endl;
+
     while (bPlayerWon == false)
     {
         cout << "Guess what the random number is: ";
