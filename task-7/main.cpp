@@ -23,6 +23,12 @@ class party // Shared variables amongst all players
 {
 public:
     int coins = 100;
+
+    // Need to overload the - and << operators, as this is a custom class and these operators are not already defined
+
+    party operator-(int num) {
+        return party(coins - num);
+    }
 };
 
 int main(int argc, char* argv[])
@@ -128,12 +134,10 @@ int main(int argc, char* argv[])
         cout << "Enter item number: ";
         cin >> allPlayers[i].chosenItemId;
 
-        coins = coins - price;
-
         switch (allPlayers[i].chosenItemId)
         {
         case 1:
-            party coins = coins - greatSword.price;
+            coins = coins - greatSword.price;
             break;
         case 2:
             break;
