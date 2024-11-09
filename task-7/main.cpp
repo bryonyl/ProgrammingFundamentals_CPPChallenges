@@ -6,42 +6,117 @@ using namespace std;
 class player
 {
 public:
-    int totalPlayers[3];
     string name = "";
     string characterRole[3] = { "Knight", "Archer", "Spearman" };
+    int coins = 100;
+    int chosenItemId = 0;
 };
 
 class item
 {
+public:
     string itemName = "";
-    string itemType = "";
+    int itemId = 0;
     int price = 0;
     int damage = 0;
 };
-
-void getPlayerName()
-{
-
-}
 
 int main(int argc, char* argv[])
 {
     cout << "CHALLENGE 7" << endl;
     cout << "-----------" << endl;
 
-    int coins = 100;
-
+    // Setting up player variables
     player player1;
     player player2;
     player player3;
+    player allPlayers[3] = { player1, player2, player3 };
 
-    player totalPlayers[3] = { player1, player2, player3 };
+    player chosenItemId;
 
-    for (int i = 0; i <= 3; i++)
+    // Setting up items
+    item greatSword;
+        greatSword.itemName = "Great Sword";
+        greatSword.itemId = 1;
+        greatSword.price = 40;
+        greatSword.damage = 100;
+
+    item scimitar;
+        greatSword.itemName = "Scimitar";
+        greatSword.itemId = 2;
+        greatSword.price = 35;
+        greatSword.damage = 75;
+
+    item dagger;
+        dagger.itemName = "Dagger";
+        dagger.itemId = 3;
+        dagger.price = 10;
+        dagger.damage = 35;
+
+    item longbow;
+        longbow.itemName = "Longbow";
+        longbow.itemId = 4;
+        longbow.price = 20;
+        longbow.damage = 55;
+
+    item crossbow;
+        crossbow.itemName = "Crossbow";
+        crossbow.itemId = 5;
+        crossbow.price = 40;
+        crossbow.damage = 100;
+
+    item rustySpear;
+        rustySpear.itemName = "Rusty Spear";
+        rustySpear.itemId = 6;
+        rustySpear.price = 10;
+        rustySpear.damage = 35;
+
+    item ironSpear;
+        ironSpear.itemName = "Iron Spear";
+        ironSpear.itemId = 7;
+        ironSpear.price = 20;
+        ironSpear.damage = 65;
+
+     item allItemIds[7];
+
+    // Asks for each player's name
+    for (int i = 0; i < 3; i++)
     {
-        cout << "Enter player #" << i++ << "'s name: ";
-        cin >> totalPlayers[i].name;
-        cout << totalPlayers[i].name;
+        cout << "Enter Player #" << i + 1 << "'s name: ";
+        cin >> allPlayers[i].name;
+        cout << allPlayers[i].name << " is Player #" << i + 1 << ".\n\n";
+        continue;
+    }
+
+    // Displays items and allows each player to buy an item. Deducts the cost of their chosen item from the coins
+    for (int i = 0; i < 3; i++)
+    {
+        cout << allPlayers[i].name << ", please select an item to purchase.\n\n";
+
+        cout << "-----------------------------------------------------------------" << endl;
+        cout << "| ITEM NAME      | ITEM TYPE | PRICE | DAMAGE  | CHARACTER ROLE |" << endl;
+        cout << "-----------------------------------------------------------------" << endl;
+        cout << "| 1. Great Sword | Sword     | 40    | 100     | Knight         |" << endl;
+        cout << "| 2. Scimitar    | Sword     | 35    | 75      | Knight         |" << endl;
+        cout << "| 3. Dagger      | Sword     | 10    | 35      | Knight         |" << endl;
+        cout << "| 4. Longbow     | Bow       | 20    | 55      | Archer         |" << endl;
+        cout << "| 5. Crossbow    | Bow       | 40    | 100     | Archer         |" << endl;
+        cout << "| 6. Rusty Spear | Spear     | 10    | 35      | Spearmen       |" << endl;
+        cout << "| 7. Iron Spear  | Spear     | 20    | 65      | Spearmen       |" << endl;
+        cout << "-----------------------------------------------------------------\n\n";
+
+        cout << "Enter item number: ";
+        cin >> allPlayers[i].chosenItemId;
+
+        if (allPlayers[i].chosenItemId == item.itemId)
+        {
+            cout << item.itemId;
+        }
+
+        cout << allPlayers[i].name << " has chosen " << allPlayers[i].chosenItemId << " as their weapon." << endl;
+        cout << allPlayers[i].coins << " coins are remaining.\n\n";
+
+        continue;
     }
 
     return 0;
