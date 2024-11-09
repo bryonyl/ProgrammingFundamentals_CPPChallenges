@@ -8,7 +8,8 @@ class player
 public:
     string name = "";
     string characterRole[3] = { "Knight", "Archer", "Spearman" };
-    int coins = 100;
+    int startingCoins = 100;
+    int currentCoins = 0;
     int chosenItemId = 0;
 };
 
@@ -31,15 +32,18 @@ int main(int argc, char* argv[])
     player player2;
     player player3;
     player allPlayers[3] = { player1, player2, player3 };
-
+    player startingCoins;
+    player currentCoins;
     player chosenItemId;
 
     // Setting up items
+
     item greatSword;
         greatSword.itemName = "Great Sword";
         greatSword.itemId = 1;
         greatSword.price = 40;
         greatSword.damage = 100;
+
 
     item scimitar;
         greatSword.itemName = "Scimitar";
@@ -77,7 +81,7 @@ int main(int argc, char* argv[])
         ironSpear.price = 20;
         ironSpear.damage = 65;
 
-     item allItemIds[7];
+    item allItems[7] = { greatSword, scimitar, dagger, longbow, crossbow, rustySpear, ironSpear };
 
     // Asks for each player's name
     for (int i = 0; i < 3; i++)
@@ -107,14 +111,40 @@ int main(int argc, char* argv[])
 
         cout << "Enter item number: ";
         cin >> allPlayers[i].chosenItemId;
-
-        if (allPlayers[i].chosenItemId == item.itemId)
+        
+        for (int j = 0; j < 7; j++) // Searches through all of the items ids to see if they match with the player's selected item id
         {
-            cout << item.itemId;
+            item* ptr = &allItems[j]; // Creates pointer variable pointing at all of the item objects
+            //cout << ptr;
+          
+            switch (allPlayers[i].chosenItemId)
+            {
+            case 1:
+                allPlayers[i].chosenItemId = greatSword.itemId;
+                break;
+            case 2:
+                allPlayers[i].chosenItemId = scimitar.itemId;
+                break;
+            case 3:
+                allPlayers[i].chosenItemId = dagger.itemId;
+                break;
+            case 4:
+                allPlayers[i].chosenItemId = longbow.itemId;
+                break;
+            case 5:
+                allPlayers[i].chosenItemId = crossbow.itemId;
+                break;
+            case 6:
+                allPlayers[i].chosenItemId = rustySpear.itemId;
+                break;
+            case 7:
+                allPlayers[i].chosenItemId = ironSpear.itemId;
+                break;
+            }
         }
-
+        
         cout << allPlayers[i].name << " has chosen " << allPlayers[i].chosenItemId << " as their weapon." << endl;
-        cout << allPlayers[i].coins << " coins are remaining.\n\n";
+        cout << allPlayers[i].currentCoins << " coins are remaining.\n\n";
 
         continue;
     }
