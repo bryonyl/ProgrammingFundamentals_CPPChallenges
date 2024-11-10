@@ -23,12 +23,6 @@ class party // Shared variables amongst all players
 {
 public:
     int coins = 100;
-
-    // Need to overload the - and << operators, as this is a custom class and these operators are not already defined
-
-    party operator-(int num) {
-        return party(coins - num);
-    }
 };
 
 int main(int argc, char* argv[])
@@ -54,7 +48,8 @@ int main(int argc, char* argv[])
 
     // Setting up party variables
 
-    party coins;
+    party party;
+    party.coins;
 
     // Setting up items
 
@@ -114,9 +109,10 @@ int main(int argc, char* argv[])
 
     // Displays items and allows each player to buy an item. Deducts the cost of their chosen item from the coins
 
+    cout << "Welcome " << allPlayers[0].name << ", " << allPlayers[1].name << " and " << allPlayers[2].name << " to the shop!" << endl;
+
     for (int i = 0; i < 3; i++)
     {
-        //cout << "Welcome " << player1 << ", " << player2 << " and " << player3 << " to the shop!" << endl;
         cout << allPlayers[i].name << ", please select an item to purchase.\n\n";
 
         cout << "+----------------+-----------+-------+---------+----------------+" << endl;
@@ -137,31 +133,30 @@ int main(int argc, char* argv[])
         switch (allPlayers[i].chosenItemId)
         {
         case 1:
-            coins = coins - greatSword.price;
+            party.coins = party.coins - greatSword.price;
             break;
         case 2:
+            party.coins = party.coins - scimitar.price;
             break;
         case 3:
+            party.coins = party.coins - dagger.price;
             break;
         case 4:
+            party.coins = party.coins - longbow.price;
             break;
         case 5:
+            party.coins = party.coins - crossbow.price;
             break;
         case 6:
+            party.coins = party.coins - rustySpear.price;
             break;
         case 7:
+            party.coins = party.coins - ironSpear.price;
             break;
         }
 
         cout << allPlayers[i].name << " has chosen " << allPlayers[i].chosenItemId << " as their weapon." << endl;
-        cout << coins << " coins are remaining.\n\n";
-
-        //for (int j = 0; j < 7; j++) // Searches through all of the items ids to see if they match with the player's selected item id
-        //{
-        //    item* ptr = &allItems[j]; // Creates pointer variable pointing at all of the item objects
-        //    //cout << ptr;
-        //    }
-        //}
+        cout << int (party.coins) << " coins are remaining.\n\n";
 
         continue;
     }
