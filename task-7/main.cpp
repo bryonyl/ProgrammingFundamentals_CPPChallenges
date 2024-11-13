@@ -4,7 +4,7 @@
 
 using namespace std;
 
-#pragma region Variable Setup
+#pragma region Object Setup
 
 // Setting up player objects
 
@@ -18,15 +18,15 @@ Player allPlayers[] = { player1, player2, player3 };
 
 Party party(100);
 
-// Setting up item objectss
+// Setting up item objects
 
-Item greatSword("Great Sword", 1, 40, 100); // Creating an item of great sword with the variables I have given it
-Item scimitar("Scimitar", 2, 35, 75);
-Item dagger("Dagger", 3, 10, 35);
-Item longbow("Longbow", 4, 20, 55);
-Item crossbow("Crossbow", 5, 40, 100);
-Item rustySpear("Rusty Spear", 6, 10, 35);
-Item ironSpear("Iron Spear", 7, 20, 65);
+Item greatSword("Great Sword", 1, 40, 100, 0); // Creating an item of great sword with the variables I have given it
+Item scimitar("Scimitar", 2, 35, 75, 0);
+Item dagger("Dagger", 3, 10, 35, 0);
+Item longbow("Longbow", 4, 20, 55, 0);
+Item crossbow("Crossbow", 5, 40, 100, 0);
+Item rustySpear("Rusty Spear", 6, 10, 35, 0);
+Item ironSpear("Iron Spear", 7, 20, 65, 0);
 
 Item allItems[7] = { greatSword, scimitar, dagger, longbow, crossbow, rustySpear, ironSpear };
 
@@ -69,8 +69,9 @@ int main(int argc, char* argv[])
 
         cout << "Enter item number: ";
         cin >> allPlayers[i].playerChosenItemId;
+        allPlayers[i].playerChosenItemId--; // Takes 1 away so that the value of this variable lines up with the item IDs
 
-        while (!(allPlayers[i].playerChosenItemId > 0 && allPlayers[i].playerChosenItemId < 8))
+        while (!(allPlayers[i].playerChosenItemId >= 0 && allPlayers[i].playerChosenItemId < 8))
         {
             cerr << "[ERROR] Invalid input! Please input numbers from 1-7." << endl;
             cout << "Reenter item number: ";
@@ -80,36 +81,49 @@ int main(int argc, char* argv[])
         if (party.currentCoins < allItems[allPlayers[i].playerChosenItemId].itemPrice)
         {
             cerr << "[ERROR] You can't spend more coins than you have! You have " << party.currentCoins << " remaining." << endl;
+            // Put code reprompting the player to enter coins here?
+        }
+        else if (allItems[allPlayers[i].playerChosenItemId].bItemOccupied == true)
+        {
+            cerr << "[SOLD OUT!] This item is sold out and is no longer available. Please choose another item." << endl;
+            // Put code reprompting the player to enter coins here?
         }
         else
         {
             switch (allPlayers[i].playerChosenItemId)
             {
-            case 1:
+            case 0:
                 party.currentCoins = party.currentCoins - greatSword.itemPrice;
+                greatSword.bItemOccupied = true;
+                break;
+            case 1:
+                party.currentCoins = party.currentCoins - scimitar.itemPrice;
+                scimitar.bItemOccupied = true;
                 break;
             case 2:
-                party.currentCoins = party.currentCoins - scimitar.itemPrice;
+                party.currentCoins = party.currentCoins - dagger.itemPrice;
+                dagger.bItemOccupied = true;
                 break;
             case 3:
-                party.currentCoins = party.currentCoins - dagger.itemPrice;
+                party.currentCoins = party.currentCoins - longbow.itemPrice;
+                longbow.bItemOccupied = true;
                 break;
             case 4:
-                party.currentCoins = party.currentCoins - longbow.itemPrice;
+                party.currentCoins = party.currentCoins - crossbow.itemPrice;
+                crossbow.bItemOccupied = true;
                 break;
             case 5:
-                party.currentCoins = party.currentCoins - crossbow.itemPrice;
+                party.currentCoins = party.currentCoins - rustySpear.itemPrice;
+                rustySpear.bItemOccupied = true;
                 break;
             case 6:
-                party.currentCoins = party.currentCoins - rustySpear.itemPrice;
-                break;
-            case 7:
                 party.currentCoins = party.currentCoins - ironSpear.itemPrice;
+                ironSpear.bItemOccupied = true;
                 break;
             }
         }
 
-        cout << allPlayers[i].playerName << " has chosen " << allPlayers[i].playerChosenItemId << " as their weapon." << endl;
+        cout << allPlayers[i].playerName << " has chosen " << allItems[allPlayers[i].playerChosenItemId].itemName << " as their weapon." << endl;
         cout << int (party.currentCoins) << " coins are remaining.\n\n";
 
         //continue;
