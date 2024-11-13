@@ -30,14 +30,13 @@ Item allItems[7] = { greatSword, scimitar, dagger, longbow, crossbow, rustySpear
 
 // Player related functions
 
-string getPlayerNames() // Asks each player's name and displays them
+void getPlayerNames() // Asks each player's name and displays them
 {
     for (int i = 0; i < 3; i++)
     {
         cout << "Enter Player #" << i + 1 << "'s name: ";
         cin >> allPlayers[i].playerName;
         cout << allPlayers[i].playerName << " is Player #" << i + 1 << ".\n\n";
-        continue;
     }
 }
 
@@ -62,90 +61,104 @@ void displayShopInterface(int i = 0)
 
 int getShopInput(int i = 0)
 {
-    cout << "Enter item number (1-7): ";
+    cout << "\nEnter item number (1-7): ";
     cin >> allPlayers[i].playerChosenItemId;
-    //allPlayers[i].playerChosenItemId--; // Takes 1 away so that the value of this variable aligns with the item IDs
+    allPlayers[i].playerChosenItemId--; // Takes 1 away so that the value of this variable aligns with the item IDs
+
+    return allPlayers[i].playerChosenItemId;
+}
+
+void allChecks() // This function is mainly for use in the other check functions, so that once one check is completed, then the rest of the checks can be completed as well
+{
+    void inputRangeCheck(); // Forward declarations, so the program knows that these functions will be declared later
+    void soldOutCheck();
+    void overspendingCheck();
 }
 
 void inputRangeCheck(int i = 0) // Checks the user's input to see if it is between 1-7. If not, an error is printed
 {
     while (!(allPlayers[i].playerChosenItemId >= 0 && allPlayers[i].playerChosenItemId < 8))
     {
-        cerr << "[ERROR] Invalid input! Please input numbers from 1-7." << endl;
+        cerr << "\n[ERROR] Invalid input! Please input numbers from 1-7." << endl;
         getShopInput();
-    }
-}
-
-void overspendingCheck(int i = 0)
-{
-    if (party.currentCoins < allItems[allPlayers[i].playerChosenItemId].itemPrice) // If the party's current coins is less than the price of the player's chosen item (so they cannot afford their selection)
-    {
-        cerr << "[ERROR] You can't spend more coins than you have! You have " << party.currentCoins << " remaining. Please try again." << endl;
-        getShopInput();
+        allChecks();
     }
 }
 
 void soldOutCheck(int i = 0)
 {
-    if (allItems[allPlayers[i].playerChosenItemId].bItemOccupied == true)
+    while (allItems[allPlayers[i].playerChosenItemId].bItemOccupied == true)
     {
-        cerr << "[SOLD OUT!] This item is sold out and is no longer available. Please choose another item." << endl;
+        cerr << "\n[SOLD OUT!] This item is sold out and is no longer available. Please choose another item." << endl;
         getShopInput();
+        allChecks();
     }
 }
 
-int spendMoney(int i = 0)
+void overspendingCheck(int i = 0)
+{
+    while (party.currentCoins < allItems[allPlayers[i].playerChosenItemId].itemPrice) // If the party's current coins is less than the price of the player's chosen item (so they cannot afford their selection)
+    {
+        cerr << "\n[ERROR] You can't spend more coins than you have! You have " << party.currentCoins << " remaining. Please try again." << endl;
+        getShopInput();
+        allChecks();
+    }
+}
+
+void spendMoney(int i = 0)
 {
     switch (allPlayers[i].playerChosenItemId)
     {
     case 0:
         party.currentCoins = party.currentCoins - greatSword.itemPrice;
-        greatSword.bItemOccupied = true;
         break;
     case 1:
         party.currentCoins = party.currentCoins - scimitar.itemPrice;
-        scimitar.bItemOccupied = true;
         break;
     case 2:
         party.currentCoins = party.currentCoins - dagger.itemPrice;
-        dagger.bItemOccupied = true;
         break;
     case 3:
         party.currentCoins = party.currentCoins - longbow.itemPrice;
-        longbow.bItemOccupied = true;
         break;
     case 4:
         party.currentCoins = party.currentCoins - crossbow.itemPrice;
-        crossbow.bItemOccupied = true;
         break;
     case 5:
         party.currentCoins = party.currentCoins - rustySpear.itemPrice;
-        rustySpear.bItemOccupied = true;
         break;
     case 6:
         party.currentCoins = party.currentCoins - ironSpear.itemPrice;
-        ironSpear.bItemOccupied = true;
         break;
     }
+    
+    allItems[allPlayers[i].playerChosenItemId].bItemOccupied = true; // Sets the current player's chosen item to occupied, so that no one else can buy it
 
-    cout << allPlayers[i].playerName << " has chosen " << allItems[allPlayers[i].playerChosenItemId].itemName << " as their weapon." << endl;
-    cout << int(party.currentCoins) << " coins are remaining.\n\n";
+    cout << "\n" << allPlayers[i].playerName << " has chosen " << allItems[allPlayers[i].playerChosenItemId].itemName << " as their weapon." << endl;
+    cout << "The party has " << int(party.currentCoins) << " coins remaining." << endl;
 }
 
-char restartSelection()
+void restartSelection(char yesOrNo = ' ')
 {
-    char yesOrNo = ' ';
-
     cout << "Are you happy with your selection? [Y/N]: ";
     cin >> yesOrNo;
 
-    if (yesOrNo == ('N' || 'n'))
+    if (yesOrNo == 'N' || 'n')
     {
         cout << "Resetting shop..." << endl;
-        displayShopInterface();
-        getShopInput();
+        
+        for (int i = 0; i < 3; i++)
+        {
+            displayShopInterface();
+            getShopInput();
+            inputRangeCheck();
+            overspendingCheck();
+            spendMoney();
+
+        }
+        restartSelection();
     }
-    else if (yesOrNo == ('Y' || 'y'))
+    else if (yesOrNo == 'Y' || 'y')
     {
         cout << "Selection confirmed!" << endl;
     }
@@ -161,16 +174,18 @@ int main(int argc, char* argv[])
     cout << "CHALLENGE 7" << endl;
     cout << "-----------" << endl;
 
+    getPlayerNames();
+
     cout << "Welcome " << allPlayers[0].playerName << ", " << allPlayers[1].playerName << " and " << allPlayers[2].playerName << " to the shop!" << endl;
 
     for (int i = 0; i < 3; i++)
     {
+        displayShopInterface();
         getShopInput();
         inputRangeCheck();
+        soldOutCheck();
         overspendingCheck();
         spendMoney();
-
-        //continue;
     }
 
     restartSelection();
