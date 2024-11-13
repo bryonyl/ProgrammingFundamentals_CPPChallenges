@@ -59,7 +59,7 @@ void displayShopInterface(int i = 0)
     cout << "+----------------+-----------+-------+---------+----------------+" << endl;
 }
 
-int getShopInput(int i = 0)
+int getShopInput(int i = 0) // Gets the player's choice of item
 {
     cout << "\nEnter item number (1-7): ";
     cin >> allPlayers[i].playerChosenItemId;
@@ -88,7 +88,7 @@ void inputRangeCheck(int i = 0) // Checks the user's input to see if it is betwe
     }
 }
 
-void soldOutCheck(int i = 0)
+void soldOutCheck(int i = 0) // Checks if the player's chosen item has been bought already using the bItemOccupied boolean variable
 {
     while (allItems[allPlayers[i].playerChosenItemId].bItemOccupied == true)
     {
@@ -99,7 +99,7 @@ void soldOutCheck(int i = 0)
     }
 }
 
-void overspendingCheck(int i = 0)
+void overspendingCheck(int i = 0) // Checks if the party is attempting to overspend by checking if their coins are less than their specified item's price
 {
     while (party.currentCoins < allItems[allPlayers[i].playerChosenItemId].itemPrice) // If the party's current coins is less than the price of the player's chosen item (so they cannot afford their selection)
     {
@@ -110,7 +110,7 @@ void overspendingCheck(int i = 0)
     }
 }
 
-void spendMoney(int i = 0)
+void spendMoney(int i = 0) // Subtracts the prices of individual items from the party's coins
 {
     switch (allPlayers[i].playerChosenItemId)
     {
