@@ -18,13 +18,13 @@ Party party(100);
 
 // Setting up item objects
 
-Item greatSword("Great Sword", 1, 40, 100, 0); // Creating an item of great sword with the variables I have given it
-Item scimitar("Scimitar", 2, 35, 75, 0);
-Item dagger("Dagger", 3, 10, 35, 0);
-Item longbow("Longbow", 4, 20, 55, 0);
-Item crossbow("Crossbow", 5, 40, 100, 0);
-Item rustySpear("Rusty Spear", 6, 10, 35, 0);
-Item ironSpear("Iron Spear", 7, 20, 65, 0);
+Item greatSword("Great Sword", 1, 40, 100, "Knight", 0); // Creating an item of great sword with the variables I have given it
+Item scimitar("Scimitar", 2, 35, 75, "Knight", 0);
+Item dagger("Dagger", 3, 10, 35, "Knight", 0);
+Item longbow("Longbow", 4, 20, 55, "Archer", 0);
+Item crossbow("Crossbow", 5, 40, 100, "Archer", 0);
+Item rustySpear("Rusty Spear", 6, 10, 35, "Spearman", 0);
+Item ironSpear("Iron Spear", 7, 20, 65, "Spearman", 0);
 
 Item allItems[7] = { greatSword, scimitar, dagger, longbow, crossbow, rustySpear, ironSpear };
 
@@ -37,6 +37,17 @@ void getPlayerNames() // Asks each player's name and displays them
         cout << "Enter Player #" << i + 1 << "'s name: ";
         cin >> allPlayers[i].playerName;
         cout << allPlayers[i].playerName << " is Player #" << i + 1 << ".\n\n";
+    }
+}
+
+void printPlayerSummary()
+{
+    cout << "\nParty Summary" << endl;
+    cout << "-------------" << endl;
+
+    for (int i = 0; i < 3; i++)
+    {
+        cout << "Player #" << i + 1 << " (" << allPlayers[i].playerName << "), Role: " << allItems[allPlayers[i].playerChosenItemId].itemRole << ", Weapon: " << allItems[allPlayers[i].playerChosenItemId].itemName << ", Damage: " << allItems[allPlayers[i].playerChosenItemId].itemDamage << endl;
     }
 }
 
@@ -156,11 +167,8 @@ void restartSelection(char yesOrNo = ' ')
         for (int i = 0; i < 3; i++)
         {
             displayShopInterface();
-            getShopInput();
-            inputRangeCheck();
-            overspendingCheck();
+            allChecks();
             spendMoney();
-
         }
         restartSelection();
     }
@@ -193,6 +201,7 @@ int main(int argc, char* argv[])
     }
 
     restartSelection();
+    printPlayerSummary();
 
     return 0;
 }

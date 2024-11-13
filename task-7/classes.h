@@ -10,18 +10,20 @@ public:
     int itemId = 0;
     int itemPrice = 0;
     int itemDamage = 0;
+    string itemRole = " ";
     bool bItemOccupied = false;
 
-    Item(string name, int id, int price, int damage, bool bOccupied); // Constructor is defined here
+    Item(string name, int id, int price, int damage, string role, bool bOccupied); // Constructor is defined here
 };
 
 // What is created from the blueprint above - an object
 
-Item::Item(string name, int id, int price, int damage, bool bOccupied) { // Assigns values to the object. Also technically a definition, but includes the body of the constructor
+Item::Item(string name, int id, int price, int damage, string role, bool bOccupied) { // Assigns values to the object. Also technically a definition, but includes the body of the constructor
     itemName = name;
     itemId = id;
     itemPrice = price;
     itemDamage = damage;
+    itemRole = role;
     bItemOccupied = bOccupied;
 
 }
