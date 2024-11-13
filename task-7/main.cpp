@@ -4,8 +4,6 @@
 
 using namespace std;
 
-#pragma region Object Setup
-
 // Setting up player objects
 
 Player player1("", 0);
@@ -30,15 +28,10 @@ Item ironSpear("Iron Spear", 7, 20, 65, 0);
 
 Item allItems[7] = { greatSword, scimitar, dagger, longbow, crossbow, rustySpear, ironSpear };
 
-#pragma endregion
+// Player related functions
 
-int main(int argc, char* argv[])
+string getPlayerNames() // Asks each player's name and displays them
 {
-    cout << "CHALLENGE 7" << endl;
-    cout << "-----------" << endl;
-
-    // Asks for each player's name
-
     for (int i = 0; i < 3; i++)
     {
         cout << "Enter Player #" << i + 1 << "'s name: ";
@@ -46,88 +39,141 @@ int main(int argc, char* argv[])
         cout << allPlayers[i].playerName << " is Player #" << i + 1 << ".\n\n";
         continue;
     }
+}
 
-    // Displays items and allows each player to buy an item. Deducts the cost of their chosen item from the coins
+// Shop related functions
+
+void displayShopInterface(int i = 0)
+{
+    cout << allPlayers[i].playerName << ", please select an item to purchase.\n\n";
+
+    cout << "+----------------+-----------+-------+---------+----------------+" << endl;
+    cout << "| ITEM NAME      | ITEM TYPE | PRICE | DAMAGE  | CHARACTER ROLE |" << endl;
+    cout << "+----------------+-----------+-------+---------+----------------+" << endl;
+    cout << "| 1. Great Sword | Sword     | 40    | 100     | Knight         |" << endl;
+    cout << "| 2. Scimitar    | Sword     | 35    | 75      | Knight         |" << endl;
+    cout << "| 3. Dagger      | Sword     | 10    | 35      | Knight         |" << endl;
+    cout << "| 4. Longbow     | Bow       | 20    | 55      | Archer         |" << endl;
+    cout << "| 5. Crossbow    | Bow       | 40    | 100     | Archer         |" << endl;
+    cout << "| 6. Rusty Spear | Spear     | 10    | 35      | Spearmen       |" << endl;
+    cout << "| 7. Iron Spear  | Spear     | 20    | 65      | Spearmen       |" << endl;
+    cout << "+----------------+-----------+-------+---------+----------------+\n\n";
+}
+
+int getShopInput(int i = 0)
+{
+    cout << "Enter item number (1-7): ";
+    cin >> allPlayers[i].playerChosenItemId;
+    //allPlayers[i].playerChosenItemId--; // Takes 1 away so that the value of this variable aligns with the item IDs
+}
+
+void inputRangeCheck(int i = 0) // Checks the user's input to see if it is between 1-7. If not, an error is printed
+{
+    while (!(allPlayers[i].playerChosenItemId >= 0 && allPlayers[i].playerChosenItemId < 8))
+    {
+        cerr << "[ERROR] Invalid input! Please input numbers from 1-7." << endl;
+        getShopInput();
+    }
+}
+
+void overspendingCheck(int i = 0)
+{
+    if (party.currentCoins < allItems[allPlayers[i].playerChosenItemId].itemPrice) // If the party's current coins is less than the price of the player's chosen item (so they cannot afford their selection)
+    {
+        cerr << "[ERROR] You can't spend more coins than you have! You have " << party.currentCoins << " remaining. Please try again." << endl;
+        getShopInput();
+    }
+}
+
+void soldOutCheck(int i = 0)
+{
+    if (allItems[allPlayers[i].playerChosenItemId].bItemOccupied == true)
+    {
+        cerr << "[SOLD OUT!] This item is sold out and is no longer available. Please choose another item." << endl;
+        getShopInput();
+    }
+}
+
+int spendMoney(int i = 0)
+{
+    switch (allPlayers[i].playerChosenItemId)
+    {
+    case 0:
+        party.currentCoins = party.currentCoins - greatSword.itemPrice;
+        greatSword.bItemOccupied = true;
+        break;
+    case 1:
+        party.currentCoins = party.currentCoins - scimitar.itemPrice;
+        scimitar.bItemOccupied = true;
+        break;
+    case 2:
+        party.currentCoins = party.currentCoins - dagger.itemPrice;
+        dagger.bItemOccupied = true;
+        break;
+    case 3:
+        party.currentCoins = party.currentCoins - longbow.itemPrice;
+        longbow.bItemOccupied = true;
+        break;
+    case 4:
+        party.currentCoins = party.currentCoins - crossbow.itemPrice;
+        crossbow.bItemOccupied = true;
+        break;
+    case 5:
+        party.currentCoins = party.currentCoins - rustySpear.itemPrice;
+        rustySpear.bItemOccupied = true;
+        break;
+    case 6:
+        party.currentCoins = party.currentCoins - ironSpear.itemPrice;
+        ironSpear.bItemOccupied = true;
+        break;
+    }
+
+    cout << allPlayers[i].playerName << " has chosen " << allItems[allPlayers[i].playerChosenItemId].itemName << " as their weapon." << endl;
+    cout << int(party.currentCoins) << " coins are remaining.\n\n";
+}
+
+char restartSelection()
+{
+    char yesOrNo = ' ';
+
+    cout << "Are you happy with your selection? [Y/N]: ";
+    cin >> yesOrNo;
+
+    if (yesOrNo == ('N' || 'n'))
+    {
+        cout << "Resetting shop..." << endl;
+        displayShopInterface();
+        getShopInput();
+    }
+    else if (yesOrNo == ('Y' || 'y'))
+    {
+        cout << "Selection confirmed!" << endl;
+    }
+    else
+    {
+        cerr << "[ERROR] Invalid input! Please enter Y or N: ";
+        cin >> yesOrNo;
+    }
+}
+
+int main(int argc, char* argv[])
+{
+    cout << "CHALLENGE 7" << endl;
+    cout << "-----------" << endl;
 
     cout << "Welcome " << allPlayers[0].playerName << ", " << allPlayers[1].playerName << " and " << allPlayers[2].playerName << " to the shop!" << endl;
 
     for (int i = 0; i < 3; i++)
     {
-        cout << allPlayers[i].playerName << ", please select an item to purchase.\n\n";
-
-        cout << "+----------------+-----------+-------+---------+----------------+" << endl;
-        cout << "| ITEM NAME      | ITEM TYPE | PRICE | DAMAGE  | CHARACTER ROLE |" << endl;
-        cout << "+----------------+-----------+-------+---------+----------------+" << endl;
-        cout << "| 1. Great Sword | Sword     | 40    | 100     | Knight         |" << endl;
-        cout << "| 2. Scimitar    | Sword     | 35    | 75      | Knight         |" << endl;
-        cout << "| 3. Dagger      | Sword     | 10    | 35      | Knight         |" << endl;
-        cout << "| 4. Longbow     | Bow       | 20    | 55      | Archer         |" << endl;
-        cout << "| 5. Crossbow    | Bow       | 40    | 100     | Archer         |" << endl;
-        cout << "| 6. Rusty Spear | Spear     | 10    | 35      | Spearmen       |" << endl;
-        cout << "| 7. Iron Spear  | Spear     | 20    | 65      | Spearmen       |" << endl;
-        cout << "+----------------+-----------+-------+---------+----------------+\n\n";
-
-        cout << "Enter item number: ";
-        cin >> allPlayers[i].playerChosenItemId;
-        allPlayers[i].playerChosenItemId--; // Takes 1 away so that the value of this variable lines up with the item IDs
-
-        while (!(allPlayers[i].playerChosenItemId >= 0 && allPlayers[i].playerChosenItemId < 8))
-        {
-            cerr << "[ERROR] Invalid input! Please input numbers from 1-7." << endl;
-            cout << "Reenter item number: ";
-            cin >> allPlayers[i].playerChosenItemId;
-        }
-        cout << allItems[allPlayers[i].playerChosenItemId].itemName;
-        if (party.currentCoins < allItems[allPlayers[i].playerChosenItemId].itemPrice)
-        {
-            cerr << "[ERROR] You can't spend more coins than you have! You have " << party.currentCoins << " remaining." << endl;
-            // Put code reprompting the player to enter coins here?
-        }
-        else if (allItems[allPlayers[i].playerChosenItemId].bItemOccupied == true)
-        {
-            cerr << "[SOLD OUT!] This item is sold out and is no longer available. Please choose another item." << endl;
-            // Put code reprompting the player to enter coins here?
-        }
-        else
-        {
-            switch (allPlayers[i].playerChosenItemId)
-            {
-            case 0:
-                party.currentCoins = party.currentCoins - greatSword.itemPrice;
-                greatSword.bItemOccupied = true;
-                break;
-            case 1:
-                party.currentCoins = party.currentCoins - scimitar.itemPrice;
-                scimitar.bItemOccupied = true;
-                break;
-            case 2:
-                party.currentCoins = party.currentCoins - dagger.itemPrice;
-                dagger.bItemOccupied = true;
-                break;
-            case 3:
-                party.currentCoins = party.currentCoins - longbow.itemPrice;
-                longbow.bItemOccupied = true;
-                break;
-            case 4:
-                party.currentCoins = party.currentCoins - crossbow.itemPrice;
-                crossbow.bItemOccupied = true;
-                break;
-            case 5:
-                party.currentCoins = party.currentCoins - rustySpear.itemPrice;
-                rustySpear.bItemOccupied = true;
-                break;
-            case 6:
-                party.currentCoins = party.currentCoins - ironSpear.itemPrice;
-                ironSpear.bItemOccupied = true;
-                break;
-            }
-        }
-
-        cout << allPlayers[i].playerName << " has chosen " << allItems[allPlayers[i].playerChosenItemId].itemName << " as their weapon." << endl;
-        cout << int (party.currentCoins) << " coins are remaining.\n\n";
+        getShopInput();
+        inputRangeCheck();
+        overspendingCheck();
+        spendMoney();
 
         //continue;
     }
+
+    restartSelection();
 
     return 0;
 }
