@@ -1,119 +1,59 @@
 #include <iostream>
 #include <string>
+#include "classes.h"
 
 using namespace std;
 
-class item
-{
-public:
-    string itemName = "";
-    int itemId = 0;
-    int price = 0;
-    int damage = 0;
-};
+#pragma region Variable Setup
 
-class player
-{
-public:
-    string name = "";
-    int chosenItemId;
-};
+// Setting up player objects
 
-class party // Shared variables amongst all players
-{
-public:
-    int coins = 100;
-};
+Player player1("", 0);
+Player player2("", 0);
+Player player3("", 0);
+
+Player allPlayers[] = { player1, player2, player3 };
+
+// Setting up party object
+
+Party party(100);
+
+// Setting up item objectss
+
+Item greatSword("Great Sword", 1, 40, 100); // Creating an item of great sword with the variables I have given it
+Item scimitar("Scimitar", 2, 35, 75);
+Item dagger("Dagger", 3, 10, 35);
+Item longbow("Longbow", 4, 20, 55);
+Item crossbow("Crossbow", 5, 40, 100);
+Item rustySpear("Rusty Spear", 6, 10, 35);
+Item ironSpear("Iron Spear", 7, 20, 65);
+
+Item allItems[7] = { greatSword, scimitar, dagger, longbow, crossbow, rustySpear, ironSpear };
+
+#pragma endregion
 
 int main(int argc, char* argv[])
 {
     cout << "CHALLENGE 7" << endl;
     cout << "-----------" << endl;
 
-    // Setting up player variables
-
-    player player1;
-    player1.name = "";
-    player1.chosenItemId = 0;
-
-    player player2;
-    player2.name = "";
-    player2.chosenItemId = 0;
-
-    player player3;
-    player3.name = "";
-    player3.chosenItemId = 0;
-
-    player allPlayers[] = { player1, player2, player3 };
-
-    // Setting up party variables
-
-    party party;
-    party.coins;
-
-    // Setting up items
-
-    item greatSword;
-    greatSword.itemName = "Great Sword";
-    greatSword.itemId = 1;
-    greatSword.price = 40;
-    greatSword.damage = 100;
-
-    item scimitar;
-    greatSword.itemName = "Scimitar";
-    greatSword.itemId = 2;
-    greatSword.price = 35;
-    greatSword.damage = 75;
-
-    item dagger;
-    dagger.itemName = "Dagger";
-    dagger.itemId = 3;
-    dagger.price = 10;
-    dagger.damage = 35;
-
-    item longbow;
-    longbow.itemName = "Longbow";
-    longbow.itemId = 4;
-    longbow.price = 20;
-    longbow.damage = 55;
-
-    item crossbow;
-    crossbow.itemName = "Crossbow";
-    crossbow.itemId = 5;
-    crossbow.price = 40;
-    crossbow.damage = 100;
-
-    item rustySpear;
-    rustySpear.itemName = "Rusty Spear";
-    rustySpear.itemId = 6;
-    rustySpear.price = 10;
-    rustySpear.damage = 35;
-
-    item ironSpear;
-    ironSpear.itemName = "Iron Spear";
-    ironSpear.itemId = 7;
-    ironSpear.price = 20;
-    ironSpear.damage = 65;
-
-    item allItems[7] = { greatSword, scimitar, dagger, longbow, crossbow, rustySpear, ironSpear };
-
     // Asks for each player's name
 
     for (int i = 0; i < 3; i++)
     {
         cout << "Enter Player #" << i + 1 << "'s name: ";
-        cin >> allPlayers[i].name;
-        cout << allPlayers[i].name << " is Player #" << i + 1 << ".\n\n";
+        cin >> allPlayers[i].playerName;
+        cout << allPlayers[i].playerName << " is Player #" << i + 1 << ".\n\n";
         continue;
     }
 
     // Displays items and allows each player to buy an item. Deducts the cost of their chosen item from the coins
 
-    cout << "Welcome " << allPlayers[0].name << ", " << allPlayers[1].name << " and " << allPlayers[2].name << " to the shop!" << endl;
+    cout << "Welcome " << allPlayers[0].playerName << ", " << allPlayers[1].playerName << " and " << allPlayers[2].playerName << " to the shop!" << endl;
 
     for (int i = 0; i < 3; i++)
     {
-        cout << allPlayers[i].name << ", please select an item to purchase.\n\n";
+        cout << allPlayers[i].playerName << ", please select an item to purchase.\n\n";
 
         cout << "+----------------+-----------+-------+---------+----------------+" << endl;
         cout << "| ITEM NAME      | ITEM TYPE | PRICE | DAMAGE  | CHARACTER ROLE |" << endl;
@@ -128,37 +68,51 @@ int main(int argc, char* argv[])
         cout << "+----------------+-----------+-------+---------+----------------+\n\n";
 
         cout << "Enter item number: ";
-        cin >> allPlayers[i].chosenItemId;
+        cin >> allPlayers[i].playerChosenItemId;
 
-        switch (allPlayers[i].chosenItemId)
+        while (!(allPlayers[i].playerChosenItemId > 0 && allPlayers[i].playerChosenItemId < 8))
         {
-        case 1:
-            party.coins = party.coins - greatSword.price;
-            break;
-        case 2:
-            party.coins = party.coins - scimitar.price;
-            break;
-        case 3:
-            party.coins = party.coins - dagger.price;
-            break;
-        case 4:
-            party.coins = party.coins - longbow.price;
-            break;
-        case 5:
-            party.coins = party.coins - crossbow.price;
-            break;
-        case 6:
-            party.coins = party.coins - rustySpear.price;
-            break;
-        case 7:
-            party.coins = party.coins - ironSpear.price;
-            break;
+            cerr << "[ERROR] Invalid input! Please input numbers from 1-7." << endl;
+            cout << "Reenter item number: ";
+            cin >> allPlayers[i].playerChosenItemId;
+        }
+        cout << allItems[allPlayers[i].playerChosenItemId].itemName;
+        if (party.currentCoins < allItems[allPlayers[i].playerChosenItemId].itemPrice)
+        {
+            cerr << "[ERROR] You can't spend more coins than you have! You have " << party.currentCoins << " remaining." << endl;
+        }
+        else
+        {
+            switch (allPlayers[i].playerChosenItemId)
+            {
+            case 1:
+                party.currentCoins = party.currentCoins - greatSword.itemPrice;
+                break;
+            case 2:
+                party.currentCoins = party.currentCoins - scimitar.itemPrice;
+                break;
+            case 3:
+                party.currentCoins = party.currentCoins - dagger.itemPrice;
+                break;
+            case 4:
+                party.currentCoins = party.currentCoins - longbow.itemPrice;
+                break;
+            case 5:
+                party.currentCoins = party.currentCoins - crossbow.itemPrice;
+                break;
+            case 6:
+                party.currentCoins = party.currentCoins - rustySpear.itemPrice;
+                break;
+            case 7:
+                party.currentCoins = party.currentCoins - ironSpear.itemPrice;
+                break;
+            }
         }
 
-        cout << allPlayers[i].name << " has chosen " << allPlayers[i].chosenItemId << " as their weapon." << endl;
-        cout << int (party.coins) << " coins are remaining.\n\n";
+        cout << allPlayers[i].playerName << " has chosen " << allPlayers[i].playerChosenItemId << " as their weapon." << endl;
+        cout << int (party.currentCoins) << " coins are remaining.\n\n";
 
-        continue;
+        //continue;
     }
 
     return 0;

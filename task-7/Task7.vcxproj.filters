@@ -10,4 +10,7 @@
       <UniqueIdentifier>{A5487F9D-31BA-3C2C-B75A-9B2B65E7E845}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="classes.h" />
+  </ItemGroup>
 </Project>
