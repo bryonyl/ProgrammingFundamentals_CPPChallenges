@@ -44,7 +44,7 @@ void getPlayerNames() // Asks each player's name and displays them
 
 void displayShopInterface(int i = 0)
 {
-    cout << allPlayers[i].playerName << ", please select an item to purchase.\n\n";
+    cout << "\n" << allPlayers[i].playerName << ", please select an item to purchase.\n\n";
 
     cout << "+----------------+-----------+-------+---------+----------------+" << endl;
     cout << "| ITEM NAME      | ITEM TYPE | PRICE | DAMAGE  | CHARACTER ROLE |" << endl;
@@ -56,7 +56,7 @@ void displayShopInterface(int i = 0)
     cout << "| 5. Crossbow    | Bow       | 40    | 100     | Archer         |" << endl;
     cout << "| 6. Rusty Spear | Spear     | 10    | 35      | Spearmen       |" << endl;
     cout << "| 7. Iron Spear  | Spear     | 20    | 65      | Spearmen       |" << endl;
-    cout << "+----------------+-----------+-------+---------+----------------+\n\n";
+    cout << "+----------------+-----------+-------+---------+----------------+" << endl;
 }
 
 int getShopInput(int i = 0)
@@ -77,9 +77,12 @@ void allChecks() // This function is mainly for use in the other check functions
 
 void inputRangeCheck(int i = 0) // Checks the user's input to see if it is between 1-7. If not, an error is printed
 {
-    while (!(allPlayers[i].playerChosenItemId >= 0 && allPlayers[i].playerChosenItemId < 8))
+    while (!(allPlayers[i].playerChosenItemId >= 0 && allPlayers[i].playerChosenItemId < 7))
     {
         cerr << "\n[ERROR] Invalid input! Please input numbers from 1-7." << endl;
+        cin.clear();
+        cin.ignore(1000, '\n');
+
         getShopInput();
         allChecks();
     }
@@ -90,6 +93,7 @@ void soldOutCheck(int i = 0)
     while (allItems[allPlayers[i].playerChosenItemId].bItemOccupied == true)
     {
         cerr << "\n[SOLD OUT!] This item is sold out and is no longer available. Please choose another item." << endl;
+
         getShopInput();
         allChecks();
     }
@@ -100,6 +104,7 @@ void overspendingCheck(int i = 0)
     while (party.currentCoins < allItems[allPlayers[i].playerChosenItemId].itemPrice) // If the party's current coins is less than the price of the player's chosen item (so they cannot afford their selection)
     {
         cerr << "\n[ERROR] You can't spend more coins than you have! You have " << party.currentCoins << " remaining. Please try again." << endl;
+
         getShopInput();
         allChecks();
     }
@@ -140,12 +145,13 @@ void spendMoney(int i = 0)
 
 void restartSelection(char yesOrNo = ' ')
 {
-    cout << "Are you happy with your selection? [Y/N]: ";
+    cout << "\nAre you happy with your selection? [Y/N]: ";
     cin >> yesOrNo;
 
-    if (yesOrNo == 'N' || 'n')
+    if (yesOrNo == 'N' || yesOrNo == 'n')
     {
-        cout << "Resetting shop..." << endl;
+        cout << "\nResetting shop..." << endl;
+        party.currentCoins = 100;
         
         for (int i = 0; i < 3; i++)
         {
@@ -158,9 +164,9 @@ void restartSelection(char yesOrNo = ' ')
         }
         restartSelection();
     }
-    else if (yesOrNo == 'Y' || 'y')
+    else if (yesOrNo == 'Y' || yesOrNo == 'y')
     {
-        cout << "Selection confirmed!" << endl;
+        cout << "\nSelection confirmed!" << endl;
     }
     else
     {
@@ -182,9 +188,7 @@ int main(int argc, char* argv[])
     {
         displayShopInterface();
         getShopInput();
-        inputRangeCheck();
-        soldOutCheck();
-        overspendingCheck();
+        allChecks();
         spendMoney();
     }
 
