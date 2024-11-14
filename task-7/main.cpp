@@ -28,6 +28,12 @@ Item ironSpear("Iron Spear", 7, 20, 65, "Spearman", 0);
 
 Item allItems[7] = { greatSword, scimitar, dagger, longbow, crossbow, rustySpear, ironSpear };
 
+// Forward declarations, so the program knows that these functions will be declared later
+
+bool inputRangeCheck(int i);
+bool soldOutCheck(int i);
+bool overspendingCheck(int i);
+
 // Player related functions
 
 void getPlayerNames() // Asks each player's name and displays them
@@ -53,71 +59,86 @@ void printPlayerSummary()
 
 // Shop related functions
 
-void displayShopInterface(int i = 0)
+void displayShopInterface(int i)
 {
     cout << "\n" << allPlayers[i].playerName << ", please select an item to purchase.\n\n";
 
     cout << "+----------------+-----------+-------+---------+----------------+" << endl;
     cout << "| ITEM NAME      | ITEM TYPE | PRICE | DAMAGE  | CHARACTER ROLE |" << endl;
     cout << "+----------------+-----------+-------+---------+----------------+" << endl;
-    cout << "| 1. Great Sword | Sword     | 40    | 100     | Knight         |" << endl;
-    cout << "| 2. Scimitar    | Sword     | 35    | 75      | Knight         |" << endl;
-    cout << "| 3. Dagger      | Sword     | 10    | 35      | Knight         |" << endl;
-    cout << "| 4. Longbow     | Bow       | 20    | 55      | Archer         |" << endl;
-    cout << "| 5. Crossbow    | Bow       | 40    | 100     | Archer         |" << endl;
-    cout << "| 6. Rusty Spear | Spear     | 10    | 35      | Spearmen       |" << endl;
-    cout << "| 7. Iron Spear  | Spear     | 20    | 65      | Spearmen       |" << endl;
+    cout << "| 0. Great Sword | Sword     | 40    | 100     | Knight         |" << endl;
+    cout << "| 1. Scimitar    | Sword     | 35    | 75      | Knight         |" << endl;
+    cout << "| 2. Dagger      | Sword     | 10    | 35      | Knight         |" << endl;
+    cout << "| 3. Longbow     | Bow       | 20    | 55      | Archer         |" << endl;
+    cout << "| 4. Crossbow    | Bow       | 40    | 100     | Archer         |" << endl;
+    cout << "| 5. Rusty Spear | Spear     | 10    | 35      | Spearmen       |" << endl;
+    cout << "| 6. Iron Spear  | Spear     | 20    | 65      | Spearmen       |" << endl;
     cout << "+----------------+-----------+-------+---------+----------------+" << endl;
 }
 
-int getShopInput(int i = 0) // Gets the player's choice of item
+int getShopInput(int i) // Gets the player's choice of item
 {
-    cout << "\nEnter item number (1-7): ";
+    cout << "\nEnter item number (0-6): ";
     cin >> allPlayers[i].playerChosenItemId;
-    allPlayers[i].playerChosenItemId--; // Takes 1 away so that the value of this variable aligns with the item IDs
-
+;
     return allPlayers[i].playerChosenItemId;
 }
 
-void allChecks() // This function is mainly for use in the other check functions, so that once one check is completed, then the rest of the checks can be completed as well
+bool allChecks(int i) // This function is mainly for use in the other check functions, so that once one check is completed, then the rest of the checks can be completed as well
 {
-    void inputRangeCheck(); // Forward declarations, so the program knows that these functions will be declared later
-    void soldOutCheck();
-    void overspendingCheck();
+    if (inputRangeCheck(i) == true && soldOutCheck(i) == true && overspendingCheck(i) == true)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
-void inputRangeCheck(int i = 0) // Checks the user's input to see if it is between 1-7. If not, an error is printed
+bool inputRangeCheck(int i) // Checks the user's input to see if it is between 1-7. If not, an error is printed
 {
-    while (!(allPlayers[i].playerChosenItemId >= 0 && allPlayers[i].playerChosenItemId < 7))
+    bool check = !(i >= 0 && i <= 6);
+
+    if (check)
     {
         cerr << "\n[ERROR] Invalid input! Please input numbers from 1-7." << endl;
         cin.clear();
         cin.ignore(1000, '\n');
 
-        getShopInput();
-        allChecks();
+        return false;
+    }
+    else
+    {
+        return true;
     }
 }
 
-void soldOutCheck(int i = 0) // Checks if the player's chosen item has been bought already using the bItemOccupied boolean variable
+bool soldOutCheck(int i) // Checks if the player's chosen item has been bought already using the bItemOccupied boolean variable
 {
-    while (allItems[allPlayers[i].playerChosenItemId].bItemOccupied == true)
+    if (allItems[i].bItemOccupied == true)
     {
         cerr << "\n[SOLD OUT!] This item is sold out and is no longer available. Please choose another item." << endl;
 
-        getShopInput();
-        allChecks();
+        return false;
+    }
+    else
+    {
+        return true;
     }
 }
 
-void overspendingCheck(int i = 0) // Checks if the party is attempting to overspend by checking if their coins are less than their specified item's price
+bool overspendingCheck(int i) // Checks if the party is attempting to overspend by checking if their coins are less than their specified item's price
 {
-    while (party.currentCoins < allItems[allPlayers[i].playerChosenItemId].itemPrice) // If the party's current coins is less than the price of the player's chosen item (so they cannot afford their selection)
+    if (party.currentCoins < allItems[i].itemPrice) // If the party's current coins is less than the price of the player's chosen item (so they cannot afford their selection)
     {
         cerr << "\n[ERROR] You can't spend more coins than you have! You have " << party.currentCoins << " remaining. Please try again." << endl;
 
-        getShopInput();
-        allChecks();
+        return false;
+    }
+    else
+    {
+        return true;
     }
 }
 
@@ -166,9 +187,12 @@ void restartSelection(char yesOrNo = ' ')
         
         for (int i = 0; i < 3; i++)
         {
-            displayShopInterface();
-            allChecks();
-            spendMoney();
+            displayShopInterface(i);
+            getShopInput(i);
+            if (allChecks(getShopInput(i)))
+            {
+                spendMoney();
+            }
         }
         restartSelection();
     }
@@ -194,10 +218,18 @@ int main(int argc, char* argv[])
 
     for (int i = 0; i < 3; i++)
     {
-        displayShopInterface();
-        getShopInput();
-        allChecks();
-        spendMoney();
+        bool notValid = false;
+
+        while (notValid == false)
+        {
+            displayShopInterface(i);
+
+            if (allChecks(getShopInput(i)))
+            {
+                spendMoney();
+                notValid = true;
+            }
+        }
     }
 
     restartSelection();
