@@ -5,16 +5,19 @@
 using namespace std;
 
 // Structs
+
 struct Item { // By giving a name to a structure, you can treat it as a data type - so you can create variables with this struct anywhere in the program
     string itemName = "itemNamePlaceholder";
+    string itemType = "itemTypePlaceholder";
     int itemId = 0;
     int itemQuantity = 0;
-};
+}; Item emptyItem, shield, potion, gloves;
 
-//Vectors
+// Vectors
 vector<Item> inventory; // Vector is a resizeable array that can grow/shrink as needed. <Item> represents the type of value this vector stores - items.
 
-int setInventorySize(int inventorySize = 0, Item emptyItem)
+// Functions
+int setInventorySize(int inventorySize, Item emptyItem)
 {
     // User specifies the inventory size
     std::cout << "Specify the inventory size: ";
@@ -36,55 +39,12 @@ int setInventorySize(int inventorySize = 0, Item emptyItem)
     }
 
     cout << "\nInventory created with " << inventorySize << " slot(s).\n\n";
+
+    return inventorySize; // As this function creates a copy of inventorySize, this line of code sends the data from the copy back to the original inventorySize variable in main
 }
 
-string invalidInputCheck(string commandInput1) // Takes 1 command input
-{
-    if ((cin.fail()))
-    {
-        cerr << "\n[ERROR] Invalid input! Please try again: ";
-        cin.clear();
-        cin.ignore(1000, '\n');
-        cin >> commandInput1;
-    }
-
-    return commandInput1;
-}
-
-string invalidInputCheck(string commandInput1, string commandInput2) // Takes 2 command inputs
-{
-    if ((cin.fail()))
-    {
-        cerr << "\n[ERROR] Invalid input! Please try again: ";
-        cin.clear();
-        cin.ignore(1000, '\n');
-        cin >> commandInput1;
-        cin >> commandInput2;
-    }
-
-    return commandInput1, commandInput2;
-}
-
-string invalidInputCheck(string commandInput1, string commandInput2, string commandInput3) // Takes 3 command inputs
-{
-    if ((cin.fail()))
-    {
-        cerr << "\n[ERROR] Invalid input! Please try again: ";
-        cin.clear();
-        cin.ignore(1000, '\n');
-        cin >> commandInput1;
-        cin >> commandInput2;
-        cin >> commandInput3;
-    }
-
-    return commandInput1, commandInput2, commandInput3;
-}
-
-//Functions
 string helpCommand(string commandInput1)
 {
-    invalidInputCheck(commandInput1);
-
     if (commandInput1 == "help")
     {
         cout << "\nAVAILABLE COMMANDS" << endl;
@@ -103,31 +63,30 @@ string helpCommand(string commandInput1)
     return commandInput1;
 }
 
-string viewCommand(string commandInput1, string commandInput2, int inventorySlotIndex, int inventorySize)
+string viewCommand(string commandInput1, string commandInput2, int inventorySlotIndex, int inventorySize) // Outputs the full details of the user-selected inventory slot index
 {
-    invalidInputCheck(commandInput1, commandInput2);
-
     if (commandInput1 == "view")
     {
-        if (stoi(commandInput2) == true) // Converts the second portion of the command input to an integer
-        {
-            cout << "commandInput2 conversion to integer SUCCESS";
-            cout << commandInput2;
+        // minventorySlotIndex = stoi(commandInput2); // Converts commandInput2 from a string to an integer
 
-            for (inventorySlotIndex = 0; inventorySlotIndex < inventorySize; inventorySlotIndex++)
-            {
-                inventory.at(inventorySlotIndex);
-            }
-        }
-        else if (stoi(commandInput2) == false)
+        if (isdigit(inventorySlotIndex) && inventorySlotIndex >= 0 && inventorySlotIndex <= 16)
         {
-            cerr << "[ERROR] Invalid input! Please enter your command in this format: \033[35mview <inventory slot index>\033[0m\n\n";
+            cerr << "\n\033[41m[ERROR]\033[0m Invalid input! Please enter a number between 1-16, in this format (\033[35mview <inventory slot index>\033[0m): ";
+            cin >> commandInput1;
+            cin >> commandInput2;
         }
+
+        inventory.at(inventorySlotIndex);
+
+        for (inventorySlotIndex = 0; inventorySlotIndex < inventorySize; inventorySlotIndex++)
+        {
+            
+        }
+        //cerr << "[ERROR] Invalid input! Please enter your command in this format: \033[35mview <inventory slot index>\033[0m\n\n";
     }
 
     return commandInput1, commandInput2;
 }
-
 
 //struct Item { ... }
 //Item allItems[] = { ... }
@@ -157,15 +116,21 @@ int main(int argc, char* argv[])
 
     // Inventory variable declarations
     int inventorySlotIndex = 0;
+    int inventorySize = 0;
+
+    // Giving items properties
+    Item emptyItem("Empty", "Empty", 0, 1);
+    Item shield("Shield", "Equippable", 1, 1);
+    Item potion("Potion", "Consumable", 2, 1);
+    Item gloves("Gloves", "Equippable", 3, 1);
 
     // Command variable declarations
     string commandInput1 = "";
     string commandInput2 = "";
     string commandInput3 = "";
-
     bool bAllowCommands = true;
 
-    
+    setInventorySize(inventorySize, emptyItem);
 
     cout << "Type \"\033[35mhelp\033[0m\" for a list of commands.\n\n";
 
@@ -214,3 +179,5 @@ int main(int argc, char* argv[])
 
     return 0;*/
 }
+
+

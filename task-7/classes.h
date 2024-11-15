@@ -34,7 +34,6 @@ public:
     int playerChosenItemId = 0;
 
     Player(string name, int chosenItemId);
-
 };
 
 Player::Player(string name, int chosenItemId) {
