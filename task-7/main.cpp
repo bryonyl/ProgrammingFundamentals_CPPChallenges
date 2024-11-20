@@ -29,9 +29,9 @@ Item allItems[7] = { greatSword, scimitar, dagger, longbow, crossbow, rustySpear
 
 // Forward declarations, so the program knows that these functions will be declared later
 
-bool inputRangeCheck(int i);
-bool soldOutCheck(int i);
-bool overspendingCheck(int i);
+bool inputRangeCheck();
+bool soldOutCheck();
+bool overspendingCheck();
 
 // Player related functions
 
@@ -39,9 +39,9 @@ void getPlayerNames() // Asks each player's name and displays them
 {
     for (playerIndex = 0; playerIndex < 3; playerIndex++)
     {
-        std::cout << "Enter Player #" << playerIndex++ /*Adding 1 so that the player number displays correctly in the console, e.g. not player #0 but player #1*/ << "'s name: ";
+        std::cout << "Enter Player #" << playerIndex+1 /*Adding 1 so that the player number displays correctly in the console, e.g. not player #0 but player #1*/ << "'s name: ";
         std::cin >> allPlayers[playerIndex].playerName;
-        std::cout << allPlayers[playerIndex].playerName << " is Player #" << playerIndex++ << ".\n\n";
+        std::cout << allPlayers[playerIndex].playerName << " is Player #" << playerIndex+1 << ".\n\n";
     }
 }
 
@@ -52,7 +52,7 @@ void printPlayerSummary()
 
     for (playerIndex = 0; playerIndex < 3; playerIndex++)
     {
-        std::cout << "Player #" << playerIndex++ << " (" << allPlayers[playerIndex].playerName << "), Role: " <<
+        std::cout << "Player #" << playerIndex+1 << " (" << allPlayers[playerIndex].playerName << "), Role: " <<
             allItems[allPlayers[playerIndex].playerChosenItemId].itemRole << ", Weapon: " <<
             allItems[allPlayers[playerIndex].playerChosenItemId].itemName << ", Damage: " <<
             allItems[allPlayers[playerIndex].playerChosenItemId].itemDamage << endl;
@@ -83,14 +83,14 @@ void displayShopInterface()
 int getShopInput() // Gets the player's choice of item
 {
     std::cout << "\nEnter item number (0-6): ";
-    std::cin >> allPlayers[playerItemChoiceIndex].playerChosenItemId;
+    std::cin >> allPlayers[playerIndex].playerChosenItemId;
 
     return allPlayers[playerItemChoiceIndex].playerChosenItemId;
 }
 
 bool allChecks() // This function is mainly for use in the other check functions, so that once one check is completed, then the rest of the checks can be completed as well
 {
-    if (inputRangeCheck(playerItemChoiceIndex) == true && soldOutCheck(playerItemChoiceIndex) == true && overspendingCheck(playerItemChoiceIndex) == true)
+    if (inputRangeCheck() == true && soldOutCheck() == true && overspendingCheck() == true)
     {
         return true;
     }
@@ -190,18 +190,19 @@ void restartSelection(char yesOrNo = ' ')
         party.currentCoins = 100;
         allItems[allPlayers[playerIndex].playerChosenItemId].bItemOccupied = false;
         
-        for (playerIndex = 0; playerIndex < 3; playerIndex++)
+        for (int playerIndex = 0; playerIndex < 3; playerIndex++)
         {
-            bool notValid = false;
+            bool bInvalidItemChoice = false;
 
-            while (notValid == false)
+            while (bInvalidItemChoice == false)
             {
                 displayShopInterface();
+                getShopInput();
 
-                if (allChecks(getShopInput()))
+                if (allChecks() == true)
                 {
                     spendMoney();
-                    notValid = true;
+                    bInvalidItemChoice = true;
                 }
             }
         }
@@ -229,18 +230,19 @@ int main(int argc, char* argv[])
 
     cout << "Welcome " << allPlayers[0].playerName << ", " << allPlayers[1].playerName << " and " << allPlayers[2].playerName << " to the shop!" << endl;
 
-    for (int i = 0; i < 3; i++)
+    for (int playerIndex = 0; playerIndex < 3; playerIndex++)
     {
-        bool notValid = false;
+        bool bInvalidItemChoice = false;
 
-        while (notValid == false)
+        while (bInvalidItemChoice == false)
         {
             displayShopInterface();
+            getShopInput();
 
-            if (allChecks(getShopInput()))
+            if (allChecks() == true)
             {
                 spendMoney();
-                notValid = true;
+                bInvalidItemChoice = true;
             }
         }
     }
