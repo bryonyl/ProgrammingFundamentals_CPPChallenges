@@ -248,6 +248,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classes.h" />
+    <ClInclude Include="globalVariables.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,7 +5,6 @@
 using namespace std;
 
 // Structs
-
 struct Item { // By giving a name to a structure, you can treat it as a data type - so you can create variables with this struct anywhere in the program
     string itemName = "itemNamePlaceholder";
     string itemType = "itemTypePlaceholder";

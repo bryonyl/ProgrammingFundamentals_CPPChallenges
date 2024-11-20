@@ -9,8 +9,14 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{A5487F9D-31BA-3C2C-B75A-9B2B65E7E845}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{5c5543a5-ad6c-493a-b253-499d15e5db03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classes.h" />
+    <ClInclude Include="globalVariables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
