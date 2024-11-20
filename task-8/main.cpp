@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "globalVariables.h"
 
 using namespace std;
 
@@ -22,7 +23,8 @@ int setInventorySize(int inventorySize, Item emptyItem)
     std::cout << "Specify the inventory size: ";
     cin >> inventorySize;
 
-    if (isdigit(inventorySize) && inventorySize >= 0 && inventorySize <= 16)
+    // Checks the validity of the inventory size input, checking if it is a digit and greater than 0 and less than or equal to 16
+    if (isdigit(inventorySize) && inventorySize > 0 && inventorySize <= 16)
     {
         for (int i = 0; i < inventorySize; i++) // Loop for each inventory slot
         {
@@ -46,6 +48,7 @@ string helpCommand(string commandInput1)
 {
     if (commandInput1 == "help")
     {
+
         cout << "\nAVAILABLE COMMANDS" << endl;
         cout << "------------------\n\n";
 
@@ -124,9 +127,7 @@ int main(int argc, char* argv[])
     Item gloves("Gloves", "Equippable", 3, 1);
 
     // Command variable declarations
-    string commandInput1 = "";
-    string commandInput2 = "";
-    string commandInput3 = "";
+
     bool bAllowCommands = true;
 
     setInventorySize(inventorySize, emptyItem);
@@ -141,6 +142,28 @@ int main(int argc, char* argv[])
         helpCommand(commandInput1);
         viewCommand(commandInput1, commandInput2, inventorySlotIndex, inventorySize);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /*std::string command;
     int index = 0;
