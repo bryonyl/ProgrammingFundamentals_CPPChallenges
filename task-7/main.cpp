@@ -264,5 +264,7 @@ int main(int argc, char* argv[])
     restartSelection();
     printPlayerSummary();
 
+    cout << "\nYou find yourself in a forest. A monster appears..." << endl;
+
     return 0;
 }

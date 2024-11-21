@@ -13,20 +13,20 @@ public:
     string itemRole = " ";
     bool bItemOccupied = false;
 
-    Item(string name, int id, int price, int damage, string role, bool bOccupied); // Constructor is defined here
+    Item(string name, int id, int price, int damage, string role, bool bOccupied); // Declaration of the class constructor
 };
 
 // What is created from the blueprint above - an object
 
-Item::Item(string name, int id, int price, int damage, string role, bool bOccupied) { // Assigns values to the object. Also technically a definition, but includes the body of the constructor
+Item::Item(string name, int id, int price, int damage, string role, bool bOccupied) { // Body of the class constructor - assigns values to the object. Also technically a definition, but includes the body of the constructor
     itemName = name;
     itemId = id;
     itemPrice = price;
     itemDamage = damage;
     itemRole = role;
     bItemOccupied = bOccupied;
-
 }
+
 class Player
 {
 public:
