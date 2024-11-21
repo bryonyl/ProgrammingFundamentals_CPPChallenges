@@ -63,8 +63,6 @@ void printPlayerSummary()
 
 void displayShopInterface()
 {
-    playerIndex = 0;
-
     std::cout << "\n" << allPlayers[playerIndex].playerName << ", please select an item to purchase.\n\n";
 
     std::cout << "+----------------+-----------+-------+---------+----------------+" << endl;
@@ -83,9 +81,18 @@ void displayShopInterface()
 int getShopInput() // Gets the player's choice of item
 {
     std::cout << "\nEnter item number (0-6): ";
+    
     std::cin >> allPlayers[playerIndex].playerChosenItemId;
 
-    return allPlayers[playerItemChoiceIndex].playerChosenItemId;
+    while (std::cin.fail())
+    {
+        std::cerr << "\n[ERROR] Invalid input! Please input numbers from 0-6: ";
+        std::cin.clear();
+        std::cin.ignore(1000, '\n');
+        std::cin >> allPlayers[playerIndex].playerChosenItemId;
+    }
+
+    return allPlayers[playerIndex].playerChosenItemId;
 }
 
 bool allChecks() // This function is mainly for use in the other check functions, so that once one check is completed, then the rest of the checks can be completed as well
@@ -102,13 +109,13 @@ bool allChecks() // This function is mainly for use in the other check functions
 
 bool inputRangeCheck() // Checks the user's input to see if it is between 0-6. If not, an error is printed
 {
-    bool check = !(playerItemChoiceIndex >= 0 && playerItemChoiceIndex <= 6);
+    bool check = !(allPlayers[playerIndex].playerChosenItemId >= 0 && allPlayers[playerIndex].playerChosenItemId <= 6);
 
     if (check)
     {
-        std::cerr << "\n[ERROR] Invalid input! Please input numbers from 0-6." << endl;
-        cin.clear();
-        cin.ignore(1000, '\n');
+        std::cerr << "\n[ERROR] Invalid input! Please input numbers from 0-6: ";
+        std::cin.clear();
+        std::cin.ignore(1000, '\n');
 
         return false;
     }
@@ -120,9 +127,9 @@ bool inputRangeCheck() // Checks the user's input to see if it is between 0-6. I
 
 bool soldOutCheck() // Checks if the player's chosen item has been bought already using the bItemOccupied boolean variable
 {
-    if (allItems[playerItemChoiceIndex].bItemOccupied == true)
+    if (allItems[allPlayers[playerIndex].playerChosenItemId].bItemOccupied == true)
     {
-        cerr << "\n[SOLD OUT!] This item is sold out and is no longer available. Please choose another item." << endl;
+        std::cerr << "\n[SOLD OUT!] This item is sold out and is no longer available. Please choose another item." << endl;
 
         return false;
     }
@@ -134,21 +141,21 @@ bool soldOutCheck() // Checks if the player's chosen item has been bought alread
 
 bool overspendingCheck() // Checks if the party is attempting to overspend by checking if their coins are less than their specified item's price
 {
-        if (party.currentCoins < allItems[playerItemChoiceIndex].itemPrice) // If the party's current coins is less than the price of the player's chosen item (so they cannot afford their selection)
-        {
-            cerr << "\n[ERROR] You can't spend more coins than you have! You have " << party.currentCoins << " remaining. Please try again." << endl;
+    if (party.currentCoins < allItems[allPlayers[playerIndex].playerChosenItemId].itemPrice) // If the party's current coins is less than the price of the player's chosen item (so they cannot afford their selection)
+    {
+        std::cerr << "\n[ERROR] You can't spend more coins than you have! You have " << party.currentCoins << " remaining. Please try again." << endl;
 
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 
 void spendMoney() // Subtracts the prices of individual items from the party's coins
 {
-    switch (allPlayers[playerItemChoiceIndex].playerChosenItemId)
+    switch (allPlayers[playerIndex].playerChosenItemId)
     {
     case 0:
         party.currentCoins = party.currentCoins - greatSword.itemPrice;
@@ -179,22 +186,35 @@ void spendMoney() // Subtracts the prices of individual items from the party's c
     std::cout << "The party has " << int(party.currentCoins) << " coins remaining." << endl;
 }
 
-void restartSelection(char yesOrNo = ' ')
+void restartSelection()
 {
-    cout << "\nAre you happy with your selection? [Y/N]: ";
-    cin >> yesOrNo;
+    char yesOrNo;
 
+    std::cout << "\nAre you happy with your selection? [Y/N]: ";
+    std::cin >> yesOrNo;
+
+    while (!(yesOrNo == 'Y' || yesOrNo == 'y' || yesOrNo == 'N' || yesOrNo == 'n'))
+    {
+        std::cerr << "\n[ERROR] Invalid input! Please enter Y or N: ";
+        std::cin.clear();
+        std::cin.ignore(1000, '\n');
+        std::cin >> yesOrNo;
+    }
     if (yesOrNo == 'N' || yesOrNo == 'n')
     {
-        cout << "\nResetting shop..." << endl;
+        std::cout << "\nResetting shop..." << endl;
         party.currentCoins = 100;
-        allItems[allPlayers[playerIndex].playerChosenItemId].bItemOccupied = false;
         
-        for (int playerIndex = 0; playerIndex < 3; playerIndex++)
+        for (playerIndex = 0; playerIndex < 3; playerIndex++)
         {
-            bool bInvalidItemChoice = false;
+            allItems[allPlayers[playerIndex].playerChosenItemId].bItemOccupied = false; // For each player, reset their occupied item so that it becomes free and not sold out
+        }
+        
+        for (playerIndex = 0; playerIndex < 3; playerIndex++)
+        {
+            bool bValidItemChoice = false;
 
-            while (bInvalidItemChoice == false)
+            while (bValidItemChoice == false)
             {
                 displayShopInterface();
                 getShopInput();
@@ -202,39 +222,33 @@ void restartSelection(char yesOrNo = ' ')
                 if (allChecks() == true)
                 {
                     spendMoney();
-                    bInvalidItemChoice = true;
+                    bValidItemChoice = true;
                 }
             }
         }
 
         restartSelection();
-        printPlayerSummary();
     }
     else if (yesOrNo == 'Y' || yesOrNo == 'y')
     {
-        cout << "\nSelection confirmed!" << endl;
-    }
-    else
-    {
-        cerr << "[ERROR] Invalid input! Please enter Y or N: ";
-        cin >> yesOrNo;
+        std::cout << "\nSelection confirmed!" << endl;
     }
 }
 
 int main(int argc, char* argv[])
 {
-    cout << "CHALLENGE 7" << endl;
-    cout << "-----------" << endl;
+    std::cout << "CHALLENGE 7" << endl;
+    std::cout << "-----------" << endl;
 
     getPlayerNames();
 
-    cout << "Welcome " << allPlayers[0].playerName << ", " << allPlayers[1].playerName << " and " << allPlayers[2].playerName << " to the shop!" << endl;
+    std::cout << "Welcome " << allPlayers[0].playerName << ", " << allPlayers[1].playerName << " and " << allPlayers[2].playerName << " to the shop!" << endl;
 
-    for (int playerIndex = 0; playerIndex < 3; playerIndex++)
+    for (playerIndex = 0; playerIndex < 3; playerIndex++)
     {
-        bool bInvalidItemChoice = false;
+        bool bValidItemChoice = false;
 
-        while (bInvalidItemChoice == false)
+        while (bValidItemChoice == false)
         {
             displayShopInterface();
             getShopInput();
@@ -242,7 +256,7 @@ int main(int argc, char* argv[])
             if (allChecks() == true)
             {
                 spendMoney();
-                bInvalidItemChoice = true;
+                bValidItemChoice = true;
             }
         }
     }
