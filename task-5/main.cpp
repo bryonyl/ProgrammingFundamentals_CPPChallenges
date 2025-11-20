@@ -103,8 +103,8 @@ bool bIsInputAlpha(string text, int i = 0)
 
 int main(int argc, char* argv[])
 {
-    cout << "CHALLENGE 5" << endl;
-    cout << "-----------" << endl;
+    cout << "Text Case Converter" << endl;
+    cout << "-------------------" << endl;
 
     string text = "";
 

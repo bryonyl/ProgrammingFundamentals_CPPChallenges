@@ -4,8 +4,8 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    cout << "CHALLENGE 3" << endl;
-    cout << "-----------" << endl;
+    cout << "RandomCalculationsChallenge" << endl;
+    cout << "---------------------------" << endl;
 
     float x = 0; // Initialising x with 0 to avoid problems in the future.
 

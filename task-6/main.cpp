@@ -5,8 +5,8 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    cout << "CHALLENGE 6" << endl;
-    cout << "-----------" << endl;
+    cout << "Random Number Guessing Game" << endl;
+    cout << "---------------------------" << endl;
 
     int guess = 0;
     int randomNum = random(0, 100);

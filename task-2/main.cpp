@@ -4,8 +4,8 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    cout << "CHALLENGE 2" << endl;
-    cout << "-----------" << endl;
+    cout << "CLAN TAG SETUP CHALLENGE" << endl;
+    cout << "------------------------" << endl;
 
     string name;
     string username;

@@ -40,8 +40,8 @@ string applyAsciiArt(string text)
 
 int main(int argc, char* argv[])
 {
-    cout << "CHALLENGE 4" << endl;
-    cout << "-----------" << endl;
+    cout << "ASCII Art Text Converter" << endl;
+    cout << "------------------------" << endl;
 
     string text;
 

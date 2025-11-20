@@ -237,7 +237,7 @@ void restartSelection()
 
 int main(int argc, char* argv[])
 {
-    std::cout << "CHALLENGE 7" << endl;
+    std::cout << "Weapon Shop" << endl;
     std::cout << "-----------" << endl;
 
     getPlayerNames();
